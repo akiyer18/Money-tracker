@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Finance Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo"><i class="fas fa-piggy-bank"></i> FinanceTracker</h1>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#monthly" class="nav-link active" data-tab="monthly">
+                        <i class="fas fa-calendar-alt"></i> Monthly Tracker
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#budget" class="nav-link" data-tab="budget">
+                        <i class="fas fa-chart-pie"></i> Budget
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#insights" class="nav-link" data-tab="insights">
+                        <i class="fas fa-analytics"></i> Insights
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#accounts" class="nav-link" data-tab="accounts">
+                        <i class="fas fa-university"></i> Accounts
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#planning" class="nav-link" data-tab="planning">
+                        <i class="fas fa-chart-line"></i> Future Planning
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Monthly Tracker Module -->
+        <section id="monthly" class="module active">
+            <div class="container">
+                <h2 class="module-title">Monthly Tracker</h2>
+                
+                <!-- Dashboard Overview -->
+                <div class="dashboard-overview">
+                    <div class="stats-grid">
+                        <div class="stat-card income">
+                            <div class="stat-icon">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Total Income</h3>
+                                <p class="stat-value" id="total-income">$0.00</p>
+                            </div>
+                        </div>
+                        <div class="stat-card expense">
+                            <div class="stat-icon">
+                                <i class="fas fa-arrow-down"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Total Spending</h3>
+                                <p class="stat-value" id="total-spending">$0.00</p>
+                            </div>
+                        </div>
+                        <div class="stat-card balance">
+                            <div class="stat-icon">
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>Total Account Balance</h3>
+                                <p class="stat-value" id="current-balance">$0.00</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="progress-section">
+                        <h3>Monthly Progress</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <p class="progress-text" id="progress-text">0% of budget used</p>
+                    </div>
+                </div>
+
+                <!-- Add Transaction Forms -->
+                <div class="transaction-forms">
+                    <div class="form-section">
+                        <h3>Add Income</h3>
+                        <form id="income-form" class="transaction-form">
+                            <div class="form-row">
+                                <input type="text" id="income-source" placeholder="Source (e.g., Job, Allowance)" required>
+                                <input type="number" id="income-amount" placeholder="Amount" step="0.01" required>
+                            </div>
+                            <div class="form-row">
+                                <input type="date" id="income-date" required>
+                                <select id="income-account" required>
+                                    <option value="">Select Account to Credit</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-income">
+                                <i class="fas fa-plus"></i> Add Income
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <div class="form-section">
+                        <h3>Add Expense</h3>
+                        <form id="expense-form" class="transaction-form">
+                            <div class="form-row">
+                                <select id="expense-category" required>
+                                    <option value="">Select Category</option>
+                                    <option value="rent">🏠 Rent & Housing</option>
+                                    <option value="groceries">🛒 Groceries</option>
+                                    <option value="dining-out">🍕 Dining Out</option>
+                                    <option value="transport">🚗 Transportation</option>
+                                    <option value="utilities">⚡ Utilities</option>
+                                    <option value="subscriptions">📱 Subscriptions</option>
+                                    <option value="education">📚 Education</option>
+                                    <option value="entertainment">🎬 Entertainment</option>
+                                    <option value="shopping">🛍️ Shopping</option>
+                                    <option value="health">🏥 Health & Medical</option>
+                                    <option value="fitness">💪 Fitness & Gym</option>
+                                    <option value="insurance">🛡️ Insurance</option>
+                                    <option value="other">💸 Other</option>
+                                </select>
+                                <input type="text" id="expense-item" placeholder="Item/Description" required>
+                            </div>
+                            <div class="form-row">
+                                <input type="number" id="expense-amount" placeholder="Amount" step="0.01" required>
+                                <input type="date" id="expense-date" required>
+                            </div>
+                            <div class="form-row">
+                                <select id="payment-method" required>
+                                    <option value="">Payment Method</option>
+                                    <option value="cash">Cash</option>
+                                    <option value="card">Debit Card</option>
+                                    <option value="credit">Credit Card</option>
+                                    <option value="online">Online Payment</option>
+                                </select>
+                                <button type="submit" class="btn btn-expense">
+                                    <i class="fas fa-plus"></i> Add Expense
+                                </button>
+                            </div>
+                            <div class="form-row" id="bank-selection-row" style="display: none;">
+                                <select id="expense-bank-account" required style="display: none;">
+                                    <option value="">Select Bank Account</option>
+                                </select>
+                                <div id="bank-accounts-display" style="display: none; width: 100%; margin-top: 10px;">
+                                    <h4 style="margin: 0 0 10px 0; color: var(--text-primary);">Available Bank Accounts:</h4>
+                                    <div id="bank-accounts-list"></div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Transactions List -->
+                <div class="transactions-section">
+                    <div class="section-header">
+                        <h3>Recent Transactions</h3>
+                        <div class="filter-controls">
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="income">Income</button>
+                            <button class="filter-btn" data-filter="expense">Expenses</button>
+                        </div>
+                    </div>
+                    <div class="transactions-list" id="transactions-list">
+                        <!-- Transactions will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Payment Reminders -->
+                <div class="reminders-section">
+                    <h3>Payment Reminders</h3>
+                    <div class="reminders-list" id="reminders-list">
+                        <!-- Reminders will be populated here -->
+                    </div>
+                    <button class="btn btn-secondary" id="add-reminder">
+                        <i class="fas fa-bell"></i> Add Reminder
+                    </button>
+                </div>
+
+                <!-- Data Management Section -->
+                <div class="data-management-section">
+                    <h3>Data Management</h3>
+                    <div class="data-management-controls">
+                        <button class="btn btn-warning" id="export-data">
+                            <i class="fas fa-download"></i> Export Data
+                        </button>
+                        <button class="btn btn-danger" id="clear-all-data">
+                            <i class="fas fa-trash"></i> Clear All Data
+                        </button>
+                    </div>
+                    <p class="data-note">Your data is stored locally in your browser. Export to backup before clearing.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Budget Management Module -->
+        <section id="budget" class="module">
+            <div class="container">
+                <h2 class="module-title">Budget Management</h2>
+                
+                <!-- Budget Overview -->
+                <div class="budget-overview">
+                    <div class="budget-summary-card">
+                        <h3>Monthly Budget Summary</h3>
+                        <div class="budget-totals">
+                            <div class="budget-total">
+                                <span class="label">Total Budget:</span>
+                                <span class="amount" id="total-budget">€0.00</span>
+                            </div>
+                            <div class="budget-total">
+                                <span class="label">Total Spent:</span>
+                                <span class="amount" id="total-spent-budget">€0.00</span>
+                            </div>
+                            <div class="budget-total">
+                                <span class="label">Remaining:</span>
+                                <span class="amount" id="budget-remaining">€0.00</span>
+                            </div>
+                        </div>
+                        <div class="overall-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="overall-budget-progress"></div>
+                            </div>
+                            <p class="progress-text" id="overall-budget-text">0% of budget used</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Budget Categories -->
+                <div class="budget-categories">
+                    <div class="section-header">
+                        <h3>Budget Categories</h3>
+                        <button class="btn btn-primary" id="add-budget-category">
+                            <i class="fas fa-plus"></i> Add Category
+                        </button>
+                    </div>
+                    
+                    <div class="budget-grid" id="budget-categories-grid">
+                        <!-- Budget categories will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Insights & Analytics Module -->
+        <section id="insights" class="module">
+            <div class="container">
+                <h2 class="module-title">Summary & Insights</h2>
+                
+                <!-- Time Filter -->
+                <div class="insights-controls">
+                    <div class="time-filter">
+                        <label for="insights-month">View Month:</label>
+                        <select id="insights-month">
+                            <option value="current">Current Month</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Key Metrics -->
+                <div class="insights-metrics">
+                    <div class="metric-card income-metric">
+                        <i class="fas fa-arrow-up"></i>
+                        <div class="metric-content">
+                            <h4>Monthly Income</h4>
+                            <p class="metric-value" id="insights-income">€0.00</p>
+                        </div>
+                    </div>
+                    <div class="metric-card expense-metric">
+                        <i class="fas fa-arrow-down"></i>
+                        <div class="metric-content">
+                            <h4>Monthly Expenses</h4>
+                            <p class="metric-value" id="insights-expenses">€0.00</p>
+                        </div>
+                    </div>
+                    <div class="metric-card savings-metric">
+                        <i class="fas fa-piggy-bank"></i>
+                        <div class="metric-content">
+                            <h4>Net Savings</h4>
+                            <p class="metric-value" id="insights-savings">€0.00</p>
+                        </div>
+                    </div>
+                    <div class="metric-card budget-metric">
+                        <i class="fas fa-chart-pie"></i>
+                        <div class="metric-content">
+                            <h4>Budget Utilization</h4>
+                            <p class="metric-value" id="insights-budget-util">0%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts and Analytics -->
+                <div class="insights-charts">
+                    <div class="chart-section">
+                        <h3>Spending Breakdown</h3>
+                        <div class="chart-container">
+                            <canvas id="spending-chart" width="400" height="400"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-section">
+                        <h3>Income vs Expenses Trend</h3>
+                        <div class="chart-container">
+                            <canvas id="trend-chart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Items -->
+                <div class="upcoming-section">
+                    <h3>Upcoming Items (Next 7 Days)</h3>
+                    <div id="upcoming-items" class="upcoming-list">
+                        <!-- Upcoming items will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Smart Suggestions -->
+                <div class="suggestions-section">
+                    <h3>Smart Suggestions</h3>
+                    <div id="smart-suggestions" class="suggestions-list">
+                        <!-- Smart suggestions will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Accounts Management Module -->
+        <section id="accounts" class="module">
+            <div class="container">
+                <h2 class="module-title">Accounts Management</h2>
+                
+                <div class="accounts-overview">
+                    <div class="net-worth-card">
+                        <h3>Total Net Worth</h3>
+                        <p class="net-worth-value" id="net-worth">$0.00</p>
+                    </div>
+                </div>
+
+                <div class="accounts-section">
+                    <div class="section-header">
+                        <h3>Your Accounts</h3>
+                        <div class="account-controls">
+                            <button class="btn btn-primary" id="add-account">
+                                <i class="fas fa-plus"></i> Add Account
+                            </button>
+                            <button class="btn btn-secondary" id="transfer-money">
+                                <i class="fas fa-exchange-alt"></i> Transfer Money
+                            </button>
+                        </div>
+                    </div>
+                    <div class="accounts-grid" id="accounts-grid">
+                        <!-- Account cards will be populated here -->
+                    </div>
+                </div>
+
+                <div class="import-section">
+                    <h3>Import Transactions</h3>
+                    <div class="import-controls">
+                        <input type="file" id="csv-import" accept=".csv" style="display: none;">
+                        <button class="btn btn-secondary" onclick="document.getElementById('csv-import').click()">
+                            <i class="fas fa-upload"></i> Import CSV
+                        </button>
+                        <p class="import-note">Upload bank statements in CSV format</p>
+                    </div>
+                </div>
+
+                <div class="transfer-history">
+                    <h3>Recent Transfers</h3>
+                    <div id="transfer-history-list">
+                        <!-- Transfer history will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Future Planning Module -->
+        <section id="planning" class="module">
+            <div class="container">
+                <h2 class="module-title">Future Planning</h2>
+                
+                <div class="planning-grid">
+                    <div class="planning-section">
+                        <h3>Planned Expenses</h3>
+                        <form id="planned-expense-form" class="planning-form">
+                            <input type="text" id="planned-item" placeholder="What are you planning to buy?" required>
+                            <div class="form-row">
+                                <input type="number" id="planned-cost" placeholder="Estimated cost" step="0.01" required>
+                                <input type="date" id="planned-date" required>
+                            </div>
+                            <div class="form-row">
+                                <select id="planned-category" required>
+                                    <option value="">Select Category</option>
+                                    <option value="travel">Travel/Trips</option>
+                                    <option value="gadgets">Gadgets/Tech</option>
+                                    <option value="education">Education/Courses</option>
+                                    <option value="clothing">Clothing</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <select id="planned-currency" required>
+                                    <option value="">Select Currency</option>
+                                    <option value="USD">🇺🇸 USD</option>
+                                    <option value="EUR">🇪🇺 EUR</option>
+                                    <option value="GBP">🇬🇧 GBP</option>
+                                    <option value="JPY">🇯🇵 JPY</option>
+                                    <option value="CAD">🇨🇦 CAD</option>
+                                    <option value="AUD">🇦🇺 AUD</option>
+                                    <option value="CHF">🇨🇭 CHF</option>
+                                    <option value="CNY">🇨🇳 CNY</option>
+                                    <option value="INR">🇮🇳 INR</option>
+                                    <option value="KRW">🇰🇷 KRW</option>
+                                    <option value="SGD">🇸🇬 SGD</option>
+                                    <option value="HKD">🇭🇰 HKD</option>
+                                    <option value="SEK">🇸🇪 SEK</option>
+                                    <option value="NOK">🇳🇴 NOK</option>
+                                    <option value="MXN">🇲🇽 MXN</option>
+                                    <option value="BRL">🇧🇷 BRL</option>
+                                    <option value="ZAR">🇿🇦 ZAR</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-calendar-plus"></i> Add Planned Expense
+                            </button>
+                        </form>
+                        
+                        <div class="planned-expenses-list" id="planned-expenses-list">
+                            <!-- Planned expenses will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="planning-section">
+                        <h3>Future Income Ideas</h3>
+                        <form id="income-idea-form" class="planning-form">
+                            <input type="text" id="income-idea" placeholder="Income idea (e.g., Freelancing)" required>
+                            <div class="form-row">
+                                <input type="number" id="expected-amount" placeholder="Expected amount" step="0.01" required>
+                                <input type="date" id="expected-date" required>
+                            </div>
+                            <div class="form-row">
+                                <select id="confidence-level" required>
+                                    <option value="">Confidence Level</option>
+                                    <option value="25">25% - Just an idea</option>
+                                    <option value="50">50% - Possible</option>
+                                    <option value="75">75% - Likely</option>
+                                    <option value="90">90% - Very likely</option>
+                                </select>
+                                <select id="income-idea-currency" required>
+                                    <option value="">Select Currency</option>
+                                    <option value="USD">🇺🇸 USD</option>
+                                    <option value="EUR">🇪🇺 EUR</option>
+                                    <option value="GBP">🇬🇧 GBP</option>
+                                    <option value="JPY">🇯🇵 JPY</option>
+                                    <option value="CAD">🇨🇦 CAD</option>
+                                    <option value="AUD">🇦🇺 AUD</option>
+                                    <option value="CHF">🇨🇭 CHF</option>
+                                    <option value="CNY">🇨🇳 CNY</option>
+                                    <option value="INR">🇮🇳 INR</option>
+                                    <option value="KRW">🇰🇷 KRW</option>
+                                    <option value="SGD">🇸🇬 SGD</option>
+                                    <option value="HKD">🇭🇰 HKD</option>
+                                    <option value="SEK">🇸🇪 SEK</option>
+                                    <option value="NOK">🇳🇴 NOK</option>
+                                    <option value="MXN">🇲🇽 MXN</option>
+                                    <option value="BRL">🇧🇷 BRL</option>
+                                    <option value="ZAR">🇿🇦 ZAR</option>
+                                </select>
+                            </div>
+                            
+                            <div class="recurring-income-section">
+                                <label class="recurring-checkbox">
+                                    <input type="checkbox" id="income-recurring">
+                                    <span class="checkmark"></span>
+                                    Make this recurring income
+                                </label>
+                                <div id="income-recurring-options" style="display: none; margin-top: 1rem;">
+                                    <div class="form-row">
+                                        <select id="income-frequency">
+                                            <option value="weekly">Weekly</option>
+                                            <option value="monthly">Monthly</option>
+                                            <option value="quarterly">Quarterly</option>
+                                            <option value="yearly">Yearly</option>
+                                        </select>
+                                        <select id="income-day">
+                                            <option value="">Day of Receipt</option>
+                                            <option value="1">1st of month</option>
+                                            <option value="5">5th of month</option>
+                                            <option value="10">10th of month</option>
+                                            <option value="15">15th of month</option>
+                                            <option value="20">20th of month</option>
+                                            <option value="25">25th of month</option>
+                                            <option value="30">30th/Last day</option>
+                                            <option value="monday">Every Monday</option>
+                                            <option value="tuesday">Every Tuesday</option>
+                                            <option value="wednesday">Every Wednesday</option>
+                                            <option value="thursday">Every Thursday</option>
+                                            <option value="friday">Every Friday</option>
+                                        </select>
+                                    </div>
+                                    <small style="color: var(--text-secondary); display: block; margin-top: 0.5rem;">
+                                        📅 Next income dates will be automatically generated
+                                    </small>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-lightbulb"></i> Add Income Idea
+                            </button>
+                        </form>
+                        
+                        <div class="income-ideas-list" id="income-ideas-list">
+                            <!-- Income ideas will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal" id="budget-category-modal">
+            <div class="modal-header">
+                <h3>Add Budget Category</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="budget-category-form">
+                    <input type="text" id="budget-category-name" placeholder="Category Name" required>
+                    <input type="number" id="budget-category-amount" placeholder="Monthly Budget Amount" step="0.01" required>
+                    <select id="budget-category-type">
+                        <option value="rent">🏠 Rent & Housing</option>
+                        <option value="groceries">🛒 Groceries</option>
+                        <option value="eating-out">🍕 Eating Out</option>
+                        <option value="transport">🚗 Transport</option>
+                        <option value="utilities">⚡ Utilities</option>
+                        <option value="subscriptions">📱 Subscriptions</option>
+                        <option value="education">📚 Education</option>
+                        <option value="entertainment">🎬 Entertainment</option>
+                        <option value="shopping">🛍️ Shopping</option>
+                        <option value="health">🏥 Health & Medical</option>
+                        <option value="fitness">💪 Fitness & Gym</option>
+                        <option value="insurance">🛡️ Insurance</option>
+                        <option value="miscellaneous">📦 Miscellaneous</option>
+                        <option value="custom">✏️ Custom</option>
+                    </select>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Budget Category</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal" id="account-modal">
+            <div class="modal-header">
+                <h3>Add New Account</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="account-form">
+                    <input type="text" id="account-name" placeholder="Account Name" required>
+                    <select id="account-type" required>
+                        <option value="">Account Type</option>
+                        <option value="checking">Checking Account</option>
+                        <option value="savings">Savings Account</option>
+                        <option value="cash">Cash</option>
+                        <option value="crypto">Cryptocurrency</option>
+                        <option value="investment">Investment Account</option>
+                    </select>
+                    <select id="account-currency" required>
+                        <option value="">Select Currency</option>
+                        <option value="USD">🇺🇸 US Dollar (USD)</option>
+                        <option value="EUR">🇪🇺 Euro (EUR)</option>
+                        <option value="GBP">🇬🇧 British Pound (GBP)</option>
+                        <option value="JPY">🇯🇵 Japanese Yen (JPY)</option>
+                        <option value="CAD">🇨🇦 Canadian Dollar (CAD)</option>
+                        <option value="AUD">🇦🇺 Australian Dollar (AUD)</option>
+                        <option value="CHF">🇨🇭 Swiss Franc (CHF)</option>
+                        <option value="CNY">🇨🇳 Chinese Yuan (CNY)</option>
+                        <option value="INR">🇮🇳 Indian Rupee (INR)</option>
+                        <option value="KRW">🇰🇷 Korean Won (KRW)</option>
+                        <option value="SGD">🇸🇬 Singapore Dollar (SGD)</option>
+                        <option value="HKD">🇭🇰 Hong Kong Dollar (HKD)</option>
+                        <option value="SEK">🇸🇪 Swedish Krona (SEK)</option>
+                        <option value="NOK">🇳🇴 Norwegian Krone (NOK)</option>
+                        <option value="MXN">🇲🇽 Mexican Peso (MXN)</option>
+                        <option value="BRL">🇧🇷 Brazilian Real (BRL)</option>
+                        <option value="ZAR">🇿🇦 South African Rand (ZAR)</option>
+                    </select>
+                    <input type="number" id="account-balance" placeholder="Current Balance" step="0.01" required>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Account</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal" id="reminder-modal">
+            <div class="modal-header">
+                <h3>Add Payment Reminder</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="reminder-form">
+                    <input type="text" id="reminder-title" placeholder="Payment Title" required>
+                    <input type="number" id="reminder-amount" placeholder="Amount" step="0.01" required>
+                    <input type="date" id="reminder-date" required>
+                    <select id="reminder-priority" required>
+                        <option value="">Priority</option>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                    <select id="reminder-currency" required>
+                        <option value="">Select Currency</option>
+                        <option value="USD">🇺🇸 US Dollar (USD)</option>
+                        <option value="EUR">🇪🇺 Euro (EUR)</option>
+                        <option value="GBP">🇬🇧 British Pound (GBP)</option>
+                        <option value="JPY">🇯🇵 Japanese Yen (JPY)</option>
+                        <option value="CAD">🇨🇦 Canadian Dollar (CAD)</option>
+                        <option value="AUD">🇦🇺 Australian Dollar (AUD)</option>
+                        <option value="CHF">🇨🇭 Swiss Franc (CHF)</option>
+                        <option value="CNY">🇨🇳 Chinese Yuan (CNY)</option>
+                        <option value="INR">🇮🇳 Indian Rupee (INR)</option>
+                        <option value="KRW">🇰🇷 Korean Won (KRW)</option>
+                        <option value="SGD">🇸🇬 Singapore Dollar (SGD)</option>
+                        <option value="HKD">🇭🇰 Hong Kong Dollar (HKD)</option>
+                        <option value="SEK">🇸🇪 Swedish Krona (SEK)</option>
+                        <option value="NOK">🇳🇴 Norwegian Krone (NOK)</option>
+                        <option value="MXN">🇲🇽 Mexican Peso (MXN)</option>
+                        <option value="BRL">🇧🇷 Brazilian Real (BRL)</option>
+                        <option value="ZAR">🇿🇦 South African Rand (ZAR)</option>
+                    </select>
+                    <div class="recurring-section">
+                        <label>
+                            <input type="checkbox" id="reminder-recurring">
+                            Make this a recurring reminder
+                        </label>
+                        <div id="recurring-options" style="display: none; margin-top: 1rem;">
+                            <select id="reminder-frequency">
+                                <option value="monthly">Monthly</option>
+                                <option value="weekly">Weekly</option>
+                                <option value="yearly">Yearly</option>
+                            </select>
+                            <small style="color: var(--text-secondary); display: block; margin-top: 0.5rem;">
+                                Next reminders will be automatically created
+                            </small>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Add Reminder</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal" id="edit-transaction-modal">
+            <div class="modal-header">
+                <h3>Edit Transaction</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-transaction-form">
+                    <input type="hidden" id="edit-transaction-id">
+                    <input type="text" id="edit-transaction-title" placeholder="Description" required>
+                    <input type="number" id="edit-transaction-amount" placeholder="Amount" step="0.01" required>
+                    <input type="date" id="edit-transaction-date" required>
+                    <select id="edit-transaction-category">
+                        <option value="">Select Category (for expenses)</option>
+                        <option value="rent">🏠 Rent & Housing</option>
+                        <option value="groceries">🛒 Groceries</option>
+                        <option value="dining-out">🍕 Dining Out</option>
+                        <option value="transport">🚗 Transportation</option>
+                        <option value="utilities">⚡ Utilities</option>
+                        <option value="subscriptions">📱 Subscriptions</option>
+                        <option value="education">📚 Education</option>
+                        <option value="entertainment">🎬 Entertainment</option>
+                        <option value="shopping">🛍️ Shopping</option>
+                        <option value="health">🏥 Health & Medical</option>
+                        <option value="fitness">💪 Fitness & Gym</option>
+                        <option value="insurance">🛡️ Insurance</option>
+                        <option value="other">💸 Other</option>
+                    </select>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="delete-transaction">Delete</button>
+                        <button type="submit" class="btn btn-primary">Update Transaction</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal" id="edit-account-modal">
+            <div class="modal-header">
+                <h3>Edit Account</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-account-form">
+                    <input type="hidden" id="edit-account-id">
+                    <input type="text" id="edit-account-name" placeholder="Account Name" required>
+                    <select id="edit-account-type" required>
+                        <option value="">Account Type</option>
+                        <option value="checking">Checking Account</option>
+                        <option value="savings">Savings Account</option>
+                        <option value="cash">Cash</option>
+                        <option value="crypto">Cryptocurrency</option>
+                        <option value="investment">Investment Account</option>
+                    </select>
+                    <select id="edit-account-currency" required>
+                        <option value="">Select Currency</option>
+                        <option value="USD">🇺🇸 US Dollar (USD)</option>
+                        <option value="EUR">🇪🇺 Euro (EUR)</option>
+                        <option value="GBP">🇬🇧 British Pound (GBP)</option>
+                        <option value="JPY">🇯🇵 Japanese Yen (JPY)</option>
+                        <option value="CAD">🇨🇦 Canadian Dollar (CAD)</option>
+                        <option value="AUD">🇦🇺 Australian Dollar (AUD)</option>
+                        <option value="CHF">🇨🇭 Swiss Franc (CHF)</option>
+                        <option value="CNY">🇨🇳 Chinese Yuan (CNY)</option>
+                        <option value="INR">🇮🇳 Indian Rupee (INR)</option>
+                        <option value="KRW">🇰🇷 Korean Won (KRW)</option>
+                        <option value="SGD">🇸🇬 Singapore Dollar (SGD)</option>
+                        <option value="HKD">🇭🇰 Hong Kong Dollar (HKD)</option>
+                        <option value="SEK">🇸🇪 Swedish Krona (SEK)</option>
+                        <option value="NOK">🇳🇴 Norwegian Krone (NOK)</option>
+                        <option value="MXN">🇲🇽 Mexican Peso (MXN)</option>
+                        <option value="BRL">🇧🇷 Brazilian Real (BRL)</option>
+                        <option value="ZAR">🇿🇦 South African Rand (ZAR)</option>
+                    </select>
+                    <input type="number" id="edit-account-balance" placeholder="Current Balance" step="0.01" required>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="delete-account">Delete Account</button>
+                        <button type="submit" class="btn btn-primary">Update Account</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="modal" id="confirm-modal">
+            <div class="modal-header">
+                <h3>Clear Data Options</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-message">Select what data you want to clear:</p>
+                
+                <div class="clear-options" id="clear-options" style="display: none;">
+                    <div class="clear-option">
+                        <input type="checkbox" id="clear-transactions" checked>
+                        <label for="clear-transactions">
+                            <i class="fas fa-exchange-alt"></i> Transactions
+                            <small>All income and expense records</small>
+                        </label>
+                    </div>
+                    <div class="clear-option">
+                        <input type="checkbox" id="clear-accounts" checked>
+                        <label for="clear-accounts">
+                            <i class="fas fa-university"></i> Accounts
+                            <small>Delete all bank accounts</small>
+                        </label>
+                    </div>
+                    <div class="clear-option">
+                        <input type="checkbox" id="clear-account-balances">
+                        <label for="clear-account-balances">
+                            <i class="fas fa-dollar-sign"></i> Account Balances Only
+                            <small>Reset all balances to $0 (keep accounts)</small>
+                        </label>
+                    </div>
+                    <div class="clear-option">
+                        <input type="checkbox" id="clear-reminders" checked>
+                        <label for="clear-reminders">
+                            <i class="fas fa-bell"></i> Reminders
+                            <small>All payment reminders</small>
+                        </label>
+                    </div>
+                    <div class="clear-option">
+                        <input type="checkbox" id="clear-planned-expenses" checked>
+                        <label for="clear-planned-expenses">
+                            <i class="fas fa-calendar-plus"></i> Planned Expenses
+                            <small>Future planned purchases</small>
+                        </label>
+                    </div>
+                    <div class="clear-option">
+                        <input type="checkbox" id="clear-income-ideas" checked>
+                        <label for="clear-income-ideas">
+                            <i class="fas fa-lightbulb"></i> Income Ideas
+                            <small>Future income opportunities</small>
+                        </label>
+                    </div>
+                    <div class="clear-option">
+                        <input type="checkbox" id="clear-transfers" checked>
+                        <label for="clear-transfers">
+                            <i class="fas fa-exchange-alt"></i> Transfer History
+                            <small>Money transfer records</small>
+                        </label>
+                    </div>
+                    <div class="clear-option">
+                        <input type="checkbox" id="clear-budgets" checked>
+                        <label for="clear-budgets">
+                            <i class="fas fa-chart-pie"></i> Budget Categories
+                            <small>Budget limits and categories</small>
+                        </label>
+                    </div>
+                    
+                    <div class="clear-note">
+                        <i class="fas fa-info-circle"></i>
+                        <strong>Note:</strong> Insights are auto-generated and will update based on remaining data.
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="confirm-action">Clear Selected Data</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="transfer-modal">
+            <div class="modal-header">
+                <h3>Transfer Money</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="transfer-form">
+                    <label for="transfer-from">From Account:</label>
+                    <select id="transfer-from" required>
+                        <option value="">Select source account</option>
+                    </select>
+                    
+                    <label for="transfer-to">To Account:</label>
+                    <select id="transfer-to" required>
+                        <option value="">Select destination account</option>
+                    </select>
+                    
+                    <label for="transfer-amount">Amount:</label>
+                    <input type="number" id="transfer-amount" placeholder="Amount to transfer" step="0.01" min="0.01" required>
+                    
+                    <label for="transfer-description">Description (optional):</label>
+                    <input type="text" id="transfer-description" placeholder="e.g., Savings transfer, Emergency fund">
+                    
+                    <div class="transfer-info" id="transfer-info" style="display: none;">
+                        <div class="balance-info">
+                            <p><strong>From:</strong> <span id="from-account-info"></span></p>
+                            <p><strong>To:</strong> <span id="to-account-info"></span></p>
+                            <p><strong>Available Balance:</strong> <span id="available-balance">€0.00</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Transfer Money</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js?v=2024060725"></script>
+</body>
+</html> 
