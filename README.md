@@ -357,6 +357,6 @@ These screenshots showcase the app's complete functionality across all major fea
 
 ## 🔗 Live Demo
 
-Check out the live application at: [Your GitHub Pages URL](https://[your-username].github.io/Money-tracker/)
+Check out the live application at: [https://akiyer18.github.io/Money-tracker/](https://akiyer18.github.io/Money-tracker/)
 
-*Replace with your actual GitHub Pages URL after deployment*
+*Note: GitHub Pages may take a few minutes to deploy after the first push*
